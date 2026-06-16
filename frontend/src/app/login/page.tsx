@@ -4,7 +4,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+let API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+if (API_URL && !API_URL.startsWith('http')) {
+  API_URL = `https://${API_URL}`;
+}
 
 const ROLES = [
   "Fresher Software Developer",
