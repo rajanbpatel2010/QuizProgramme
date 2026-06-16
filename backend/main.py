@@ -15,10 +15,18 @@ app = FastAPI(title="IT Skills Assessment API")
 FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://localhost:4000")
 if FRONTEND_URL and not FRONTEND_URL.startswith("http"):
     FRONTEND_URL = f"https://{FRONTEND_URL}"
+FRONTEND_URL = FRONTEND_URL.rstrip("/")
+
+origins = [
+    FRONTEND_URL,
+    "http://localhost:3000",
+    "http://localhost:4000",
+    "https://assessment-frontend-sy4q.onrender.com"
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[FRONTEND_URL],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
