@@ -13,6 +13,21 @@ router = APIRouter(
 
 QUESTIONS_PER_TEST = 10
 
+@router.get("/available")
+def get_available_questions_count(db: Session = Depends(database.get_db)):
+    """Returns the total number of questions currently in the database."""
+    count = db.query(models.Question).count()
+    
+    # Also break it down by role for better visibility
+    roles = db.query(models.Question.role_level, func.count(models.Question.id)).group_by(models.Question.role_level).all()
+    role_breakdown = {role: c for role, c in roles}
+    
+    return {
+        "total_questions": count,
+        "role_breakdown": role_breakdown,
+        "is_ready_for_test": count >= QUESTIONS_PER_TEST
+    }
+
 @router.post("/seed")
 def seed_database(db: Session = Depends(database.get_db)):
     import ai_service
