@@ -1,0 +1,9 @@
+﻿backend/.env
+backend/venv/
+backend/__pycache__/
+backend/*.db
+backend/*.db.bak
+backend/*.db.bk
+backend/*.cpython-313.pyc
+frontend/node_modules/
+frontend/.next/
