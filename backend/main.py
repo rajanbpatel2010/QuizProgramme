@@ -13,6 +13,8 @@ app = FastAPI(title="IT Skills Assessment API")
 
 # Read allowed frontend origin from environment, fallback to localhost for dev
 FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://localhost:4000")
+if FRONTEND_URL and not FRONTEND_URL.startswith("http"):
+    FRONTEND_URL = f"https://{FRONTEND_URL}"
 
 app.add_middleware(
     CORSMiddleware,
