@@ -13,6 +13,18 @@ router = APIRouter(
 
 QUESTIONS_PER_TEST = 10
 
+@router.post("/seed")
+def seed_database(db: Session = Depends(database.get_db)):
+    import ai_service
+    # Seed the database with some initial questions
+    topics = ["Software Development", "System Design", "Agile Methodologies", "Cloud Computing"]
+    for topic in topics:
+        try:
+            ai_service.scrape_and_generate_new_questions(db, [topic], "Technical Lead")
+        except Exception as e:
+            print(f"Failed to seed {topic}: {e}")
+    return {"message": "Database seeded successfully!"}
+
 @router.post("/start", response_model=schemas.TestAttemptResponse)
 def start_assessment(db: Session = Depends(database.get_db), current_user: models.User = Depends(security.get_current_user)):
     # Create a new test attempt
